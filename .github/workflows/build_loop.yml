@@ -72,21 +72,18 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
         run: |
           # Get ref for LoopKit/LoopWorkspace:main
-          SHA_MAIN=$(curl -sS -H "Authorization: token $GITHUB_TOKEN" 
-  https://api.github.com/repos/$ env.UPSTREAM_REPO /git/refs/heads/main | jq -r '.object.sha')if [ -z "$SHA_MAIN" ] || [ $#SHA_MAIN -ne 40 ]; then  echo "Error: Invalid SHA_MAIN retrieved: '$SHA_MAIN'"  exit 1fi# Get ref for LoopKit/LoopWorkspace:devSHA_DEV=$(curl -sS -H "Authorization: token $GITHUB_TOKEN" 
-  https://api.github.com/repos/$ env.UPSTREAM_REPO /git/refs/heads/dev | jq -r '.object.sha')if [ -z "$SHA_DEV" ] || [ $#SHA_DEV -ne 40 ]; then  echo "Error: Invalid SHA_DEV retrieved: '$SHA_DEV'"  exit 1fi# Create alive-main branch based on LoopKit/LoopWorkspace:maingh api 
-  --method POST 
-  -H "Authorization: token $GITHUB_TOKEN" 
-  -H "Accept: application/vnd.github.v3+json" 
-  /repos/$ github.repository_owner /LoopWorkspace/git/refs 
-  -f ref='refs/heads/alive-main' 
-  -f sha=$SHA_MAIN# Create alive-dev branch based on LoopKit/LoopWorkspace:devgh api 
-  --method POST 
-  -H "Authorization: token $GITHUB_TOKEN" 
-  -H "Accept: application/vnd.github.v3+json" 
-  /repos/$ github.repository_owner /LoopWorkspace/git/refs 
-  -f ref='refs/heads/alive-dev' 
-  -f sha=$SHA_DEV
+          SHA_MAIN=$(curl -sS -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/${{ env.UPSTREAM_REPO }}/git/refs/heads/main | jq -r '.object.sha')
+          # Get ref for LoopKit/LoopWorkspace:dev
+          SHA_DEV=$(curl -sS -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/${{ env.UPSTREAM_REPO }}/git/refs/heads/dev | jq -r '.object.sha')
+          # Create alive-main branch based on LoopKit/LoopWorkspace:main
+          gh api \
+            --method POST \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            /repos/${{ github.repository_owner }}/LoopWorkspace/git/refs \
+            -f ref='refs/heads/alive-main' \
+            -f sha=$SHA_MAIN
+          # Create alive-dev branch based on LoopKit/LoopWorkspace:dev
           gh api \
             --method POST \
             -H "Authorization: token $GITHUB_TOKEN" \
