@@ -14,7 +14,7 @@ on:
     - cron: "0 7 1 * *" # Builds the app on the 1st of every month at 07:00 UTC
 
 env:
-  UPSTREAM_REPO: LoopKit/LoopWorkspace
+  UPSTREAM_REPO: LoopKit/LoopWorkspace-Oct-2024
   UPSTREAM_BRANCH: ${{ github.ref_name }} # branch on upstream repository to sync from (replace with specific branch name if needed)
   TARGET_BRANCH: ${{ github.ref_name }} # target branch on fork to be kept in sync, and target branch on upstream to be kept alive (replace with specific branch name if needed)
   ALIVE_BRANCH_MAIN: alive-main
