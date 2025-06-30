@@ -71,7 +71,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
         run: |
-          # Get ref for LoopKit/LoopWorkspace:mainSHA_MAIN=$(curl -sS -H "Authorization: token $GITHUB_TOKEN" 
+          # Get ref for LoopKit/LoopWorkspace:main
+          SHA_MAIN=$(curl -sS -H "Authorization: token $GITHUB_TOKEN" 
   https://api.github.com/repos/$ env.UPSTREAM_REPO /git/refs/heads/main | jq -r '.object.sha')if [ -z "$SHA_MAIN" ] || [ $#SHA_MAIN -ne 40 ]; then  echo "Error: Invalid SHA_MAIN retrieved: '$SHA_MAIN'"  exit 1fi# Get ref for LoopKit/LoopWorkspace:devSHA_DEV=$(curl -sS -H "Authorization: token $GITHUB_TOKEN" 
   https://api.github.com/repos/$ env.UPSTREAM_REPO /git/refs/heads/dev | jq -r '.object.sha')if [ -z "$SHA_DEV" ] || [ $#SHA_DEV -ne 40 ]; then  echo "Error: Invalid SHA_DEV retrieved: '$SHA_DEV'"  exit 1fi# Create alive-main branch based on LoopKit/LoopWorkspace:maingh api 
   --method POST 
